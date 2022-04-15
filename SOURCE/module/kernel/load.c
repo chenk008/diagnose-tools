@@ -38,6 +38,10 @@
 
 #include "uapi/load_monitor.h"
 
+#define task_contributes_to_load(task)	((task->state & TASK_UNINTERRUPTIBLE) != 0 && \
+					 (task->flags & PF_FROZEN) == 0 && \
+					 (task->state & TASK_NOLOAD) == 0)
+
 static atomic64_t diag_nr_running = ATOMIC64_INIT(0);
 
 static struct diag_load_monitor_settings load_monitor_settings;
@@ -110,6 +114,7 @@ static void load_monitor_ipi(void *ignore)
 	diag_variant_buffer_spin_unlock(&load_monitor_variant_buffer, flags);
 }
 
+
 void diag_load_timer(struct diag_percpu_context *context)
 {
 	u64 ms;
@@ -143,10 +148,10 @@ void diag_load_timer(struct diag_percpu_context *context)
 
 		rcu_read_lock();
 
-		do_each_thread(g, p) {
+		do_each_thread(g, p) {  // do_each_thread 负责遍历所有进程
 			if (task_contributes_to_load(p))
 				nr_uninterrupt++;
-		} while_each_thread(g, p);
+		} while_each_thread(g, p);  // while_each_thread 负责遍历进程中的线程
 
 		rcu_read_unlock();
 

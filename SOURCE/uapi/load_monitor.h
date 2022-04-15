@@ -28,10 +28,10 @@ struct diag_load_monitor_settings {
 	unsigned int style;
 	unsigned int mass;
 	unsigned int cpu_run;
-	unsigned int threshold_load;
-	unsigned int threshold_load_r;
-	unsigned int threshold_load_d;
-	unsigned int threshold_task_d;
+	unsigned int threshold_load;   // 系统load值
+	unsigned int threshold_load_r; // 正在运行的任务引起的Load
+	unsigned int threshold_load_d; // D状态任务引起的Load
+	unsigned int threshold_task_d; // 当前处于D状态的任务数量
 };
 
 struct load_monitor_task {
