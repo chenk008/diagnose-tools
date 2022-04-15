@@ -158,7 +158,7 @@ void *for_each_files_task(struct task_struct *tsk,
 
 	rcu_read_lock();
 	for (fd = 0; fd < files_fdtable(files)->max_fds; fd++) {
-		file = fcheck_files(files, fd);
+		file = files_lookup_fd_rcu(files, fd);
 		if (!file)
 			continue;
 

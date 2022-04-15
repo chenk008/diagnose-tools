@@ -44,7 +44,9 @@ int hook_uprobe(int fd, loff_t offset, struct diag_uprobe *diag_uprobe)
 	if (!files)
 		goto out;
 
-	file = fcheck_files(files, fd);
+	rcu_read_lock();
+	file = files_lookup_fd_rcu(files, fd);
+	rcu_read_unlock();
 	if (!file)
 		goto out_put;
 
