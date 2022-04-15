@@ -88,7 +88,7 @@ struct cgroup_subsys_state *
 (*orig_css_get_next)(struct cgroup_subsys *ss, int id,
 		 struct cgroup_subsys_state *root, int *foundid);
 
-struct files_struct *(*orig_get_files_struct)(struct task_struct *task);
+struct files_struct *(*orig_fget_task)(struct task_struct *task);
 void (*orig_put_files_struct)(struct files_struct *files);
 
 #if LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 33)
@@ -176,7 +176,7 @@ static int lookup_syms(void)
 	LOOKUP_SYMS(disk_name);
 	LOOKUP_SYMS(access_remote_vm);
 	LOOKUP_SYMS(idle_task);
-	LOOKUP_SYMS(get_files_struct);
+	LOOKUP_SYMS(fget_task);
 	LOOKUP_SYMS(put_files_struct);
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 33)
 	LOOKUP_SYMS(follow_page);

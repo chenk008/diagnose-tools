@@ -32,6 +32,7 @@ static struct kprobe kprobe_kallsyms_lookup_name = {
 int diag_init_symbol(void)
 {
     register_kprobe(&kprobe_kallsyms_lookup_name);
+	// location of probe point,被探测点的地址。这里其实是获取了内核kallsyms_lookup_name函数指针
     diag_kallsyms_lookup_name = (void *)kprobe_kallsyms_lookup_name.addr;
     unregister_kprobe(&kprobe_kallsyms_lookup_name);
 
@@ -41,6 +42,7 @@ int diag_init_symbol(void)
         return -EINVAL;
     }
 
+	// 因为 kallsyms_lookup_name 不再export，只能通过这种方式
 	diag_kallsyms_on_each_symbol = (void *)diag_kallsyms_lookup_name("kallsyms_on_each_symbol");
 	if (!diag_kallsyms_on_each_symbol) {
 		return -EINVAL;

@@ -64,7 +64,7 @@ static inline void __percpu_counter_add(struct percpu_counter *fbc,
 #define LOOKUP_SYMS(name) do {					\
 		orig_##name = (void *)diag_kallsyms_lookup_name(#name);		\
 		if (!orig_##name) {						\
-			pr_err("kallsyms_lookup_name: %s\n", #name);		\
+			pr_err("failed to kallsyms_lookup_name: %s\n", #name);		\
 			return -EINVAL;						\
 		}								\
 	} while (0)

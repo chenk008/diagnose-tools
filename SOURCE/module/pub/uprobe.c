@@ -40,12 +40,12 @@ int hook_uprobe(int fd, loff_t offset, struct diag_uprobe *diag_uprobe)
 		goto out;
 
 	diag_uprobe->register_status = 0;
-	files = orig_get_files_struct(current);
-	if (!files)
-		goto out;
+	// files = orig_get_files_struct(current);
+	// if (!files)
+	// 	goto out;
 
 	rcu_read_lock();
-	file = files_lookup_fd_rcu(files, fd);
+	file = orig_fget_task(current, fd);
 	rcu_read_unlock();
 	if (!file)
 		goto out_put;

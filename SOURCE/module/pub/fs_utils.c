@@ -152,13 +152,17 @@ void *for_each_files_task(struct task_struct *tsk,
 		goto out_no_task;
 
 	get_task_struct(tsk);
-	files = orig_get_files_struct(tsk);
-	if (!files)
+	// files = orig_get_files_struct(tsk);
+	// if (!files)
+	// 	goto out;
+
+	if !(task->files){
 		goto out;
+	}
 
 	rcu_read_lock();
-	for (fd = 0; fd < files_fdtable(files)->max_fds; fd++) {
-		file = files_lookup_fd_rcu(files, fd);
+	for (fd = 0; fd < files_fdtable(tsk->files)->max_fds; fd++) {
+		file = orig_fget_task(tsk, fd);
 		if (!file)
 			continue;
 

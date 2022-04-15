@@ -103,7 +103,7 @@ extern struct cgroup_subsys_state *
 		 struct cgroup_subsys_state *root, int *foundid);
 
 struct files_struct;
-extern struct files_struct *(*orig_get_files_struct)(struct task_struct *task);
+extern struct file *(*orig_fget_task)(struct task_struct *task, unsigned int fd);
 extern void (*orig_put_files_struct)(struct files_struct *files);
 
 struct dentry;
