@@ -237,7 +237,7 @@ static void diag_memcg_dump_inode_stats(struct radix_tree_root *inode_stats_tree
 static void diag_memcg_build_inode_stats(struct mem_cgroup *memcg,
 		struct radix_tree_root *inode_stats_tree)
 {
-	pg_data_t *pgdat;
+	pg_data_t *pgdat; // 表示内存一个节点
 
 	for (pgdat = orig_first_online_pgdat(); pgdat;
 	     pgdat = orig_next_online_pgdat(pgdat)) {
@@ -246,7 +246,9 @@ static void diag_memcg_build_inode_stats(struct mem_cgroup *memcg,
 		struct lruvec *lruvec;
 		enum lru_list lru;
 
-		mz = mem_cgroup_nodeinfo(memcg, pgdat->node_id);
+		// 获取memcg里对应的node的mz，mz里保存了这个memcg在这个node上的lruvec
+		// mz = mem_cgroup_nodeinfo(memcg, pgdat->node_id);
+		mz = memcg->nodeinfo[pgdat->node_id];
 		if (!mz)
 			continue;
 
